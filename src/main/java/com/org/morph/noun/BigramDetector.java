@@ -21,7 +21,6 @@ public class BigramDetector {
         previousWordList.add("நல்ல");
         previousWordList.add("புதிய");
         previousWordList.add("பழைய");
-        previousWordList.add("பெரிய");
     }
 
     /**
