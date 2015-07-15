@@ -9,7 +9,7 @@ import java.util.List;
  * Created by megala on 7/3/15.
  * This class keeps the details of a single noun rule which is used find out the nouns based on its endings
  */
-public class NounRule {
+public class NounEndingRule {
     // Minimum length of the word required
     private int minimumLength;
     // Ending pattern to be checked
@@ -29,7 +29,7 @@ public class NounRule {
      * @param y Y coordinate of the letter before the pattern
      * @param numberOfLastCharactersToBeChecked Number of characters in the pattern
      */
-    public NounRule(int minimumLength, String pattern, int x, int y, int numberOfLastCharactersToBeChecked){
+    public NounEndingRule(int minimumLength, String pattern, int x, int y, int numberOfLastCharactersToBeChecked){
         this.minimumLength = minimumLength;
         this.pattern = pattern;
         xCoordinateBefore = x;

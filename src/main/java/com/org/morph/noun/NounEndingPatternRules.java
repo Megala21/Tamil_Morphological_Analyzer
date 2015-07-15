@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class NounEndingPatternRules {
     // List of noun rules that used to find the nouns
-    private static ArrayList<NounRule> nounRuleList;
+    private static ArrayList<NounEndingRule> nounEndingRuleList;
     private static Logger log = Logger.getLogger(NounEndingPatternRules.class.getName());
 
     /**
@@ -21,7 +21,7 @@ public class NounEndingPatternRules {
     public static void init() {
         try {
             Scanner fileInput = new Scanner(new File(new File("src/main/resources/nounPattern.format").getCanonicalPath()));
-            nounRuleList = new ArrayList<>();
+            nounEndingRuleList = new ArrayList<>();
             fileInput.nextLine();
 
             while(fileInput.hasNext()){
@@ -37,7 +37,7 @@ public class NounEndingPatternRules {
                     x = fileInput.nextInt();
                     y = fileInput.nextInt();
                 }
-                nounRuleList.add(new NounRule(minLength, pattern, x, y, lCharacters));
+                nounEndingRuleList.add(new NounEndingRule(minLength, pattern, x, y, lCharacters));
             }
         }
         catch(IOException e) {
@@ -51,8 +51,8 @@ public class NounEndingPatternRules {
      * @return true, if the word is a noun. false if a word do not satisfy the rules
      */
     public static boolean isNoun(List<TamilFontEntity> entities){
-        for(NounRule nounRule : nounRuleList) {
-            if(satisfies(nounRule,entities))
+        for(NounEndingRule nounEndingRule : nounEndingRuleList) {
+            if(satisfies(nounEndingRule,entities))
                 return true;
         }
         return false;
@@ -60,20 +60,17 @@ public class NounEndingPatternRules {
 
     /**
      * To check whethera word satisfies
-     * @param nounRule Noun rule to be checked
+     * @param nounEndingRule Noun rule to be checked
      * @param entities Word as a list of tamil characters
      * @return true if the particular word satisfies particular noun rule
      */
-    private static boolean satisfies(NounRule nounRule, List<TamilFontEntity> entities) {
-        if(entities.size() >= nounRule.getMinimumLength()){
-            ArrayList<TamilFontEntity> fPart =  new ArrayList<>(entities);
+    private static boolean satisfies(NounEndingRule nounEndingRule, List<TamilFontEntity> entities) {
+        if(entities.size() >= nounEndingRule.getMinimumLength()) {
+            ArrayList<TamilFontEntity> fPart = new ArrayList<>(entities);
 
-            int min = nounRule.getNumberOfLastCharactersToBeChecked();
-            List<TamilFontEntity> temp = fPart.subList(entities.size()-min,entities.size());
-            if(nounRule.checkPattern(temp))
-                return !nounRule.isbeforePositionToBeChecked() || nounRule.isXCoordinateMatches(fPart.get(fPart.size() - min - 1)) && nounRule.isYCoordinateMatches(fPart.get(fPart.size() - min - 1));
-            else
-                return false;
+            int min = nounEndingRule.getNumberOfLastCharactersToBeChecked();
+            List<TamilFontEntity> temp = fPart.subList(entities.size() - min, entities.size());
+            return nounEndingRule.checkPattern(temp) && (!nounEndingRule.isbeforePositionToBeChecked() || nounEndingRule.isXCoordinateMatches(fPart.get(fPart.size() - min - 1)) && nounEndingRule.isYCoordinateMatches(fPart.get(fPart.size() - min - 1)));
         }
         else
             return false;
